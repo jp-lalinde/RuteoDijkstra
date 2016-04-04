@@ -1,11 +1,13 @@
 package Mundo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ASUS on 22/03/2016.
  */
-public class Interseccion {
+public class Interseccion implements Comparable<Interseccion>{
 
     //-----------------------------------------------------------------------------------------------------------------//
     //Atributos
@@ -16,16 +18,26 @@ public class Interseccion {
     private boolean isInterseccionInicial;
     private boolean isInterseccionFinal;
 
+    private String nombre;
+    public Interseccion previous = null;
+    public int dist = Integer.MAX_VALUE;
+    public final Map<Interseccion, Integer> neighbours = new HashMap<>();
+
     //-----------------------------------------------------------------------------------------------------------------//
     //Constructores
     //-----------------------------------------------------------------------------------------------------------------//
 
-    public Interseccion(List<Calle> callesSalen, List<Calle>callesEntran, boolean isInterseccionInicial, boolean isInterseccionFinal)
+    public Interseccion(List<Calle> callesSalen, List<Calle>callesEntran, boolean isInterseccionInicial, boolean isInterseccionFinal )
     {
         this.callesEntran = callesEntran;
         this.callesSalen = callesSalen;
         this.isInterseccionInicial = isInterseccionInicial;
         this.isInterseccionFinal = isInterseccionFinal;
+    }
+
+    public Interseccion(String name)
+    {
+        nombre = name;
     }
 
     public Interseccion()
@@ -125,5 +137,21 @@ public class Interseccion {
     public void addCalleEntrada(Calle calle)
     {
         callesEntran.add(calle);
+    }
+
+    public void printPath() {
+        if (this == this.previous) {
+            System.out.printf("%s", this.nombre);
+        } else if (this.previous == null) {
+            System.out.printf("%s(unreached)", this.nombre);
+        } else {
+            this.previous.printPath();
+            System.out.printf(" -> %s(%d)", this.nombre, this.dist);
+        }
+    }
+
+    public int compareTo(Interseccion other)
+    {
+        return Integer.compare(dist, other.dist);
     }
 }

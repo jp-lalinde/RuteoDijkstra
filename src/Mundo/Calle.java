@@ -12,24 +12,24 @@ public class Calle {
     //-----------------------------------------------------------------------------------------------------------------//
     //Atributos
     //-----------------------------------------------------------------------------------------------------------------//
-    private Interseccion interseccionOrigen;
-    private Interseccion interseccionDestino;
+    private String interseccionOrigen;
+    private String interseccionDestino;
     private boolean hayAccidente;
     private int carriles;
     private double capacidad;
     private int numeroVehiculosMaximo;
     private int numeroVehiculosMinimo;
     private double[][] tamanioVehiculos;
-    private double distancia;
+    private int distancia;
     private boolean ambulanciaEnTransito;
 
     //-----------------------------------------------------------------------------------------------------------------//
     //Constructores
     //-----------------------------------------------------------------------------------------------------------------//
 
-    public Calle(Interseccion interseccionOrigen, Interseccion interseccionDestino,
+    public Calle(String interseccionOrigen, String interseccionDestino,
                  int carriles, int numeroVehiculosMaximo, int numeroVehiculosMinimo,
-                 double[][] tamanioVehiculos, double distancia)
+                 double[][] tamanioVehiculos, int distancia)
     {
         this.interseccionOrigen=interseccionOrigen;
         this.interseccionDestino=interseccionDestino;
@@ -43,6 +43,13 @@ public class Calle {
         calcularCapacidad();
     }
 
+    public Calle(String interseccionOrigen, String interseccionDestino, int distancia)
+    {
+        this.interseccionOrigen = interseccionOrigen;
+        this.interseccionDestino = interseccionDestino;
+        this.distancia = distancia;
+    }
+
     //-----------------------------------------------------------------------------------------------------------------//
     //Métodos
     //-----------------------------------------------------------------------------------------------------------------//
@@ -52,7 +59,7 @@ public class Calle {
      * Retorna la intersección origen
      * @return La intersección origen
      */
-    public Interseccion getInterseccionOrigen()
+    public String getInterseccionOrigen()
     {
         return interseccionOrigen;
     }
@@ -61,7 +68,7 @@ public class Calle {
      * Establece la intersección origen
      * @param interseccionOrigen La intersección origen
      */
-    public void setInterseccionOrigen(Interseccion interseccionOrigen)
+    public void setInterseccionOrigen(String interseccionOrigen)
     {
         this.interseccionOrigen = interseccionOrigen;
     }
@@ -70,7 +77,7 @@ public class Calle {
      * Retorna la intersección destino.
      * @return La intersección destino.
      */
-    public Interseccion getInterseccionDestino()
+    public String getInterseccionDestino()
     {
         return interseccionDestino;
     }
@@ -79,7 +86,7 @@ public class Calle {
      * Establece la intersección destino
      * @param interseccionDestino La intersección destino
      */
-    public void setInterseccionDestino(Interseccion interseccionDestino)
+    public void setInterseccionDestino(String interseccionDestino)
     {
         this.interseccionDestino = interseccionDestino;
     }
@@ -188,7 +195,7 @@ public class Calle {
      * Retorna la distancia en metros de la calle.
      * @return La distancia de la calle.
      */
-    public double getDistancia()
+    public int getDistancia()
     {
         return distancia;
     }
@@ -197,7 +204,7 @@ public class Calle {
      * Establece la distancia en metros de la calle.
      * @param distancia La distancia de la calle.
      */
-    public void setDistancia(double distancia)
+    public void setDistancia(int distancia)
     {
         this.distancia = distancia;
     }
