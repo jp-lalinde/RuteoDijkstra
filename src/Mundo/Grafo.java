@@ -24,16 +24,29 @@ public class Grafo {
     {
         graph = new HashMap<>(calles.length);
 
-        //one pass to find all vertices
+        //Un recorrido para modelar todos los vertices. O(N).
         for (Calle e : calles) {
-            if (!graph.containsKey(e.getInterseccionOrigen())) graph.put(e.getInterseccionOrigen(), new Interseccion(e.getInterseccionOrigen()));
-            if (!graph.containsKey(e.getInterseccionDestino())) graph.put(e.getInterseccionDestino(), new Interseccion(e.getInterseccionDestino()));
+            if (!graph.containsKey(e.getInterseccionOrigen()))
+            {
+                graph.put(e.getInterseccionOrigen(), new Interseccion(e.getInterseccionOrigen()));
+            }
+
+            if (!graph.containsKey(e.getInterseccionDestino()))
+            {
+                graph.put(e.getInterseccionDestino(), new Interseccion(e.getInterseccionDestino()));
+            }
+
         }
 
-        //another pass to set neighbouring vertices
+        //Un recorrido para modelar las relaciones entre los vertices. O(N)
         for (Calle e : calles) {
             graph.get(e.getInterseccionOrigen()).neighbours.put(graph.get(e.getInterseccionDestino()), e.getDistancia());
-            //graph.get(e.v2).neighbours.put(graph.get(e.v1), e.dist); // also do this for an undirected graph
+            if(e.esDobleVia())
+            {
+                // Arco no dirigido
+                //System.out.println("Entro no dirigido: ("+e.getInterseccionOrigen()+","+e.getInterseccionDestino()+")");
+                graph.get(e.getInterseccionDestino()).neighbours.put(graph.get(e.getInterseccionOrigen()), e.getDistancia());
+            }
         }
     }
 
@@ -58,11 +71,12 @@ public class Grafo {
         }
         final Interseccion source = graph.get(startName);
         NavigableSet<Interseccion> q = new TreeSet<>();
+        minutosTiempoRecorrido = 0;
 
-        // set-up vertices
+        // Establece las intersecciones
         for (Interseccion v : graph.values()) {
-            v.previous = v == source ? source : null;
-            v.dist = v == source ? 0 : Integer.MAX_VALUE;
+            v.previous = (v == source ? source : null);
+            v.dist = (v == source ? 0 : Integer.MAX_VALUE);
             q.add(v);
         }
 
@@ -70,6 +84,7 @@ public class Grafo {
     }
 
     /** Implementation of dijkstra's algorithm using a binary heap. */
+    //Complejidad de O( (|Edges|+|Vertices|)log(|Vertices|) )
     private void dijkstra(final NavigableSet<Interseccion> q) {
         Interseccion u, v;
         while (!q.isEmpty()) {
@@ -81,7 +96,7 @@ public class Grafo {
             for (Map.Entry<Interseccion, Integer> a : u.neighbours.entrySet()) {
                 v = a.getKey(); //the neighbour in this iteration
 
-                final int alternateDist = u.dist + a.getValue();
+                final int alternateDist = u.dist + a.getValue(); //Distancia hasta el vertices acutal + distancia hasta el vecino
                 if (alternateDist < v.dist) { // shorter path to neighbour found
                     q.remove(v);
                     v.dist = alternateDist;
@@ -101,6 +116,23 @@ public class Grafo {
 
         graph.get(endName).printPath();
         System.out.println();
+    }
+
+    /**
+     * Retorna la distancia recorrida hasta el nodo final dado
+     * @param endName El nombre del vertice final
+     * @return La distancia
+     */
+    public int getDistanciaRecorrida(String endName){
+        int distancia =0;
+        if(!graph.containsKey(endName)){
+            System.err.printf("El grafo no contiene vertice final con nombre: \"%s\"n", endName);
+        }
+        else{
+            distancia = graph.get(endName).getDistanciaRecorrida();
+        }
+        return distancia;
+
     }
 
     /** Prints the path from the source to every vertex (output order is not guaranteed) */

@@ -8,7 +8,7 @@ public class Ambulancia {
     //-----------------------------------------------------------------------------------------------------------------//
     //Atributos
     //-----------------------------------------------------------------------------------------------------------------//
-    private int velocidad;
+    private double velocidad;
     private Calle calleActual;
 
     //-----------------------------------------------------------------------------------------------------------------//
@@ -16,7 +16,7 @@ public class Ambulancia {
     //-----------------------------------------------------------------------------------------------------------------//
     public Ambulancia()
     {
-        velocidad =0;
+        velocidad =40;
         calleActual=null;
     }
 
@@ -25,12 +25,15 @@ public class Ambulancia {
     //-----------------------------------------------------------------------------------------------------------------//
 
     /**
-     * Retorna la velocidad actual de la ambulancia
+     * Retorna la velocidad actual de la ambulancia, en m/s
      * @return La velocidad de la ambulancia
      */
-    public int getVelocidad()
+    public double getVelocidad()
     {
-        return velocidad;
+        double factor = (double)1000/3600;
+        double velocidadD = velocidad*factor;
+        System.out.println(factor);
+        return velocidadD;
     }
 
     /**

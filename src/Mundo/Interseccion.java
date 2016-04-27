@@ -154,4 +154,13 @@ public class Interseccion implements Comparable<Interseccion>{
     {
         return Integer.compare(dist, other.dist);
     }
+
+    /**
+     * Retorna la distancia recorrida hasta esta intersección
+     * @return La distancia
+     */
+    public int getDistanciaRecorrida()
+    {
+       return this.dist;
+    }
 }

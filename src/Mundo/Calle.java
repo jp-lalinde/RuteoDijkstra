@@ -5,9 +5,6 @@ package Mundo;
  */
 public class Calle {
 
-    //Constantes temporales de tamaño de carros en metros
-    private static final double TAMANIO_CARRO=4.5;
-    private static final double TAMANIO_ESPACIO=1;
 
     //-----------------------------------------------------------------------------------------------------------------//
     //Atributos
@@ -17,37 +14,42 @@ public class Calle {
     private boolean hayAccidente;
     private int carriles;
     private double capacidad;
-    private int numeroVehiculosMaximo;
-    private int numeroVehiculosMinimo;
+    private double ocupacionMaxima;
+    private double ocupacionMinima;
     private double[][] tamanioVehiculos;
     private int distancia;
     private boolean ambulanciaEnTransito;
+    private boolean dobleVia;
+    private String tipoTrafico;
 
     //-----------------------------------------------------------------------------------------------------------------//
     //Constructores
     //-----------------------------------------------------------------------------------------------------------------//
 
-    public Calle(String interseccionOrigen, String interseccionDestino,
-                 int carriles, int numeroVehiculosMaximo, int numeroVehiculosMinimo,
-                 double[][] tamanioVehiculos, int distancia)
-    {
-        this.interseccionOrigen=interseccionOrigen;
-        this.interseccionDestino=interseccionDestino;
-        this.carriles=carriles;
-        this.numeroVehiculosMaximo=numeroVehiculosMaximo;
-        this.numeroVehiculosMinimo=numeroVehiculosMinimo;
-        this.tamanioVehiculos=tamanioVehiculos;
-        this.distancia=distancia;
-        hayAccidente=false;
-        ambulanciaEnTransito=false;
-        calcularCapacidad();
-    }
 
-    public Calle(String interseccionOrigen, String interseccionDestino, int distancia)
+    public Calle(String interseccionOrigen, String interseccionDestino, int distancia, String tipoTrafico, int carriles)
     {
         this.interseccionOrigen = interseccionOrigen;
         this.interseccionDestino = interseccionDestino;
         this.distancia = distancia;
+        this.dobleVia=false;
+        this.tipoTrafico=tipoTrafico;
+        this.carriles=carriles;
+        if(tipoTrafico==Constantes.TRAFICO_ALTO)
+        {
+            ocupacionMaxima= (double) 90;
+            ocupacionMinima= (double) 70;
+        }
+        else if(tipoTrafico==Constantes.TRAFICO_MEDIO)
+        {
+            ocupacionMaxima= (double) 60;
+            ocupacionMinima= (double) 40;
+        }
+        else
+        {
+            ocupacionMaxima= (double) 30;
+            ocupacionMinima= (double) 10;
+        }
     }
 
     //-----------------------------------------------------------------------------------------------------------------//
@@ -125,7 +127,6 @@ public class Calle {
     public void setCarriles(int carriles)
     {
         this.carriles = carriles;
-        calcularCapacidad();
     }
 
     /**
@@ -138,39 +139,39 @@ public class Calle {
     }
 
     /**
-     * Retorna el número de vehículos máximo que se encontrarán en la calle.
-     * @return El número de vehículos máximo.
+     * Retorna la ocupación máxima que se encontrarán en la calle.
+     * @return La ocupación de vehículos máximo.
      */
-    public int getNumeroVehiculosMaximo()
+    public double getOcupacionMaxima()
     {
-        return numeroVehiculosMaximo;
+        return ocupacionMaxima;
     }
 
     /**
-     * Establece el número máximo de vehículos que se encontrarán en la calle.
-     * @param numeroVehiculosMaximo El número de vehículos.
+     * Establece la ocupación máxima vehículos que se encontrarán en la calle.
+     * @param ocupacionMaxima La ocupación máxima vehículos.
      */
-    public void setNumeroVehiculosMaximo(int numeroVehiculosMaximo)
+    public void setOcupacionMaxima(double ocupacionMaxima)
     {
-        this.numeroVehiculosMaximo = numeroVehiculosMaximo;
+        this.ocupacionMaxima = ocupacionMaxima;
     }
 
     /**
-     * Retorna el número de vehículos mínimo que se encontrarán en la calle.
-     * @return El número de vehículos mínimo.
+     * Retorna la ocupación mínima que se encontrarán en la calle.
+     * @return la ocupación de vehículos mínimo.
      */
-    public int getNumeroVehiculosMinimo()
+    public double getOcupacionMinimo()
     {
-        return numeroVehiculosMinimo;
+        return ocupacionMinima;
     }
 
     /**
-     * Establece el número mínimo de vehículos que se encontrarán en la calle.
-     * @param numeroVehiculosMinimo El número de vehículos.
+     * Establec la ocupación mínima de vehículos que se encontrarán en la calle.
+     * @param ocupacionMinima Ocupación mínima de vehículos.
      */
-    public void setNumeroVehiculosMinimo(int numeroVehiculosMinimo)
+    public void setOcupacionMinima(double ocupacionMinima)
     {
-        this.numeroVehiculosMinimo = numeroVehiculosMinimo;
+        this.ocupacionMinima = ocupacionMinima;
     }
 
     /**
@@ -227,14 +228,22 @@ public class Calle {
         this.ambulanciaEnTransito = ambulanciaEnTransito;
     }
 
+
     /**
-     * Calcula la capacidad de la calle.
+     * Retorna si la calles es doble vía
+     * @return boolean
      */
-    public void calcularCapacidad()
+    public boolean esDobleVia()
     {
-        double distanciaTotal = distancia*carriles;
-        double tamanioCarro = TAMANIO_CARRO+TAMANIO_ESPACIO;
-        double cap = distanciaTotal/tamanioCarro;
-        capacidad = cap-(cap%1);
+        return dobleVia;
+    }
+
+    /**
+     * Establece si es doble vía
+     * @param dobleVia boolean que establece si es doble vía
+     */
+    public void setDobleVia(boolean dobleVia)
+    {
+        this.dobleVia = dobleVia;
     }
 }
