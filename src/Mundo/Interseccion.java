@@ -20,8 +20,8 @@ public class Interseccion implements Comparable<Interseccion>{
 
     private String nombre;
     public Interseccion previous = null;
-    public int dist = Integer.MAX_VALUE;
-    public final Map<Interseccion, Integer> neighbours = new HashMap<>();
+    public double dist = Integer.MAX_VALUE;
+    public final Map<Interseccion, Double> neighbours = new HashMap<>();
 
     //-----------------------------------------------------------------------------------------------------------------//
     //Constructores
@@ -146,20 +146,20 @@ public class Interseccion implements Comparable<Interseccion>{
             System.out.printf("%s(unreached)", this.nombre);
         } else {
             this.previous.printPath();
-            System.out.printf(" -> %s(%d)", this.nombre, this.dist);
+            System.out.printf(" -> %s(%f)", this.nombre, this.dist);
         }
     }
 
     public int compareTo(Interseccion other)
     {
-        return Integer.compare(dist, other.dist);
+        return Double.compare(dist, other.dist);
     }
 
     /**
-     * Retorna la distancia recorrida hasta esta intersección
+     * Retorna el peso reocorrido hasta la intersección
      * @return La distancia
      */
-    public int getDistanciaRecorrida()
+    public double getPesoRecorrido()
     {
        return this.dist;
     }

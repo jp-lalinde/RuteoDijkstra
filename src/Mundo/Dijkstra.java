@@ -5,7 +5,50 @@ package Mundo;
  */
 public class Dijkstra {
 
-    private static final Calle[] GRAPH =
+
+    private static final String START = "a";
+    private static final String END = "t'";
+
+    public static void main(String[] args) {
+        Ambulancia ambulancia = new Ambulancia();
+        Calle[] GRAPH = inicializarGrafoBase();
+        Calle[] calles = inicializarDobleVia(GRAPH);
+
+        //DIJKSTRA SENCILLO
+
+//        Grafo g = new Grafo(calles);
+//        g.dijkstra(START);
+//        g.printPath(END);
+//        double tiempo = g.getDistanciaRecorrida(END)/ambulancia.getVelocidad();
+//        System.out.println("El tiempo total de recorrido es: "+tiempo+" segundos");
+
+
+        //DIJKSTRA PONDERADO
+
+        for(int i=0;i<10;i++)
+        {
+            for(int j =0;j<calles.length;j++)
+            {
+                calles[j].randomizeOcupacion();
+                calles[j].calcularPesoPonderado();
+            }
+            Grafo g = new Grafo(calles);
+            System.out.println("ITERACION "+i);
+            System.out.println();
+            g.dijkstraPonderado(START);
+            g.printPathPonderado(END);
+            System.out.println("El tiempo total de recorrido es: "+g.getTiempoRecorrido(END)+" segundos");
+            System.out.println();
+        }
+
+
+
+        //g.printAllPaths();
+    }
+
+    public static Calle[] inicializarGrafoBase()
+    {
+         Calle[] GRAPH =
             {
                     //Nodo A
                     new Calle("a", "b", 21, Constantes.TRAFICO_BAJO, 2),
@@ -99,9 +142,9 @@ public class Dijkstra {
                     new Calle("a'", "e'", 34, Constantes.TRAFICO_BAJO, 2), //63
                     new Calle("a'", "b'", 46, Constantes.TRAFICO_MEDIO, 2),
                     //Nodo B'
-                    new Calle("n", "c'", 51, Constantes.TRAFICO_ALTO, 2), //65
-                    new Calle("n", "p'", 45, Constantes.TRAFICO_MEDIO, 2),
-                    new Calle("n", "y", 81, Constantes.TRAFICO_ALTO, 2),
+                    new Calle("b'", "c'", 51, Constantes.TRAFICO_ALTO, 2), //65
+                    new Calle("b'", "p'", 45, Constantes.TRAFICO_MEDIO, 2),
+                    new Calle("b'", "y", 81, Constantes.TRAFICO_ALTO, 2),
                     //Nodo C'
                     new Calle("c'", "b'", 51, Constantes.TRAFICO_ALTO, 2), //68
                     new Calle("c'", "m'", 82, Constantes.TRAFICO_ALTO, 2), //69
@@ -163,19 +206,7 @@ public class Dijkstra {
                     new Calle("t'", "s'", 80, Constantes.TRAFICO_MEDIO, 1) //108
 
             };
-
-    private static final String START = "t'";
-    private static final String END = "g";
-
-    public static void main(String[] args) {
-        Ambulancia ambulancia = new Ambulancia();
-        Calle[] calles = inicializarDobleVia(GRAPH);
-        Grafo g = new Grafo(calles);
-        g.dijkstra(START);
-        g.printPath(END);
-        double tiempo = (double) g.getDistanciaRecorrida(END)/ambulancia.getVelocidad();
-        System.out.println("El tiempo total de recorrido es: "+tiempo+" segundos");
-        //g.printAllPaths();
+        return GRAPH;
     }
 
     public static Calle[] inicializarDobleVia(Calle[] calles1)

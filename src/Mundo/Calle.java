@@ -16,11 +16,13 @@ public class Calle {
     private double capacidad;
     private double ocupacionMaxima;
     private double ocupacionMinima;
+    private double ocupacion;
     private double[][] tamanioVehiculos;
     private int distancia;
     private boolean ambulanciaEnTransito;
     private boolean dobleVia;
     private String tipoTrafico;
+    private double pesoPonderado;
 
     //-----------------------------------------------------------------------------------------------------------------//
     //Constructores
@@ -37,18 +39,18 @@ public class Calle {
         this.carriles=carriles;
         if(tipoTrafico==Constantes.TRAFICO_ALTO)
         {
-            ocupacionMaxima= (double) 90;
-            ocupacionMinima= (double) 70;
+            ocupacionMaxima= (double) 0.9;
+            ocupacionMinima= (double) 0.7;
         }
         else if(tipoTrafico==Constantes.TRAFICO_MEDIO)
         {
-            ocupacionMaxima= (double) 60;
-            ocupacionMinima= (double) 40;
+            ocupacionMaxima= (double) 0.6;
+            ocupacionMinima= (double) 0.4;
         }
         else
         {
-            ocupacionMaxima= (double) 30;
-            ocupacionMinima= (double) 10;
+            ocupacionMaxima= (double) 0.3;
+            ocupacionMinima= (double) 0.1;
         }
     }
 
@@ -246,4 +248,56 @@ public class Calle {
     {
         this.dobleVia = dobleVia;
     }
+
+    /**
+     * Calcula la ocupación actual de la calle
+     */
+    public void randomizeOcupacion()
+    {
+        ocupacion = ocupacionMinima + (Math.random() * (ocupacionMaxima - ocupacionMinima) );
+    }
+
+    /**
+     * Retorna la ocupación de la calle
+     * @return La ocupacion
+     */
+    public double getOcupacion()
+    {
+        return ocupacion;
+    }
+
+    /**
+     * Calcula el peso ponderado basado en el número de carriles y la ocupación actual de la calle
+     *
+     */
+    public void calcularPesoPonderado()
+    {
+        double velocidad = Constantes.VELOCIDAD_AMBULANCIA ;
+        double factorOcupacion = (double) 1-ocupacion;
+        double factorCarriles = 1;
+        if(carriles==2)
+        {
+            factorCarriles+=0.2;
+        }
+        else if(carriles==3)
+        {
+            factorCarriles+=0.3;
+        }
+        velocidad = velocidad*factorCarriles*factorOcupacion;
+        double peso = (double) distancia/velocidad;
+        //System.out.println("distancia: "+distancia+" , velocidad: "+velocidad+" , tiempo: "+peso);
+        pesoPonderado = peso;
+        //System.out.println(pesoPonderado);
+    }
+
+    /**
+     * Retorna el peso ponderado de la calle
+     * @return pesoPonderado
+     */
+    public double getPesoPonderado()
+    {
+        return pesoPonderado;
+    }
+
+
 }
