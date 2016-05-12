@@ -9,5 +9,5 @@ public class Constantes {
     public static final String TRAFICO_ALTO="alto";
     public static final String TRAFICO_MEDIO="medio";
     public static final String TRAFICO_BAJO="bajo";
-    public static final double VELOCIDAD_AMBULANCIA= 11.1111111;
+    public static final double VELOCIDAD_AMBULANCIA= 11.11111111;
 }

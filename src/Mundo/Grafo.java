@@ -10,9 +10,7 @@ public class Grafo {
     //-----------------------------------------------------------------------------------------------------------------//
     //Atributos
     //-----------------------------------------------------------------------------------------------------------------//
-    private List<Interseccion> intersecciones;
-    private List<Calle> calles;
-    private Ambulancia ambulancia;
+
     private double minutosTiempoRecorrido;
 
     private final Map<String, Interseccion> graph;
@@ -52,8 +50,10 @@ public class Grafo {
 
         //Un recorrido para modelar las relaciones entre los vertices. O(N)
         for (Calle e : calles) {
-            graph.get(e.getInterseccionOrigen()).neighbours.put(graph.get(e.getInterseccionDestino()), (double)e.getDistancia());
             double pesoPonderado = e.getPesoPonderado();
+            graph.get(e.getInterseccionOrigen()).neighbours.put(graph.get(e.getInterseccionDestino()), (double)e.getDistancia());
+            graph.get(e.getInterseccionOrigen()).setTiempoDijkstraSencillo(e.getPesoPonderado());
+
             graphPonderado.get(e.getInterseccionOrigen()).neighbours.put(graphPonderado.get(e.getInterseccionDestino()), pesoPonderado);
             if(e.esDobleVia())
             {
@@ -69,14 +69,6 @@ public class Grafo {
     //Métodos
     //-----------------------------------------------------------------------------------------------------------------//
 
-    /**
-     * Retorna los minutos transcurridos desde el inicio del thread de ruteo.
-     * @return Los minutos desde el inicio del thread.
-     */
-    public double getMinutosTiempoRecorrido()
-    {
-        return minutosTiempoRecorrido;
-    }
 
     public void dijkstra(String startName)
     {
@@ -99,7 +91,7 @@ public class Grafo {
     }
 
     /** Implementation of dijkstra's algorithm using a binary heap. */
-    //Complejidad de O( (|Edges|+|Vertices|)log(|Vertices|) )
+    //Complejidad de O( (|Edges|+(|Vertices|*log(|Vertices|) )
     private void dijkstra(final NavigableSet<Interseccion> q) {
         Interseccion u, v;
         while (!q.isEmpty()) {
@@ -115,6 +107,7 @@ public class Grafo {
                 if (alternateDist < v.dist) { // shorter path to neighbour found
                     q.remove(v);
                     v.dist = alternateDist;
+                    v.setTiempoDijkstraSencillo(u.getTiempoDijkstraSencillo()+v.getTiempoDijkstraSencillo());
                     v.previous = u;
                     q.add(v);
                 }
@@ -155,7 +148,7 @@ public class Grafo {
             for (Map.Entry<Interseccion, Double> a : u.neighbours.entrySet()) {
                 v = a.getKey(); //the neighbour in this iteration
 
-                final double alternateDist = u.dist + a.getValue(); //Distancia hasta el vertices acutal + distancia hasta el vecino
+                final double alternateDist = u.dist + a.getValue(); //Distancia hasta el vertices actual + distancia hasta el vecino
                 if (alternateDist < v.dist) { // shorter path to neighbour found
                     q.remove(v);
                     v.dist = alternateDist;
@@ -209,7 +202,7 @@ public class Grafo {
     /**
      * Retorna el tiempo de recorrido hasta el nodo final dado
      * @param endName El nombre del vertice final
-     * @return La distancia
+     * @return El timepo
      */
     public double getTiempoRecorrido(String endName){
         double tiempo =0;
@@ -220,8 +213,24 @@ public class Grafo {
             tiempo = graphPonderado.get(endName).getPesoRecorrido();
         }
         return tiempo;
-
     }
+
+    /**
+     * Retorna el tiempo de recorrido hasta el nodo final dado para Dijkstra Tradicional
+     * @param endName El nombre del vertice final
+     * @return El tiempo
+     */
+    public double getTiempoRecorridoDijkstraTradicional(String endName){
+        double tiempo =0;
+        if(!graphPonderado.containsKey(endName)){
+            System.err.printf("El grafo no contiene vertice final con nombre: \"%s\"n", endName);
+        }
+        else{
+            tiempo = graph.get(endName).getTiempoDijkstraSencillo();
+        }
+        return tiempo;
+    }
+
 
 //    /** Prints the path from the source to every vertex (output order is not guaranteed) */
 //    public void printAllPaths() {
@@ -231,8 +240,5 @@ public class Grafo {
 //        }
 //    }
 
-    public void iniciarThreadRuteo()
-    {
-        //TODO Construir thread
-    }
+
 }

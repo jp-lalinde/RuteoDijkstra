@@ -1,5 +1,8 @@
 package Mundo;
 
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by usuario on 3/28/2016.
  */
@@ -8,24 +11,28 @@ public class Dijkstra {
 
     private static final String START = "a";
     private static final String END = "t'";
+    private static double tBarDijkstraSencillo = 0;
+    private static double tBarDijkstraPonderado = 0;
 
     public static void main(String[] args) {
-        Ambulancia ambulancia = new Ambulancia();
         Calle[] GRAPH = inicializarGrafoBase();
         Calle[] calles = inicializarDobleVia(GRAPH);
 
+        //Escenarios
+//        for(int i=0;i<calles.length;i++)
+//        {
+//            calles[i].setCarriles(1);
+//            calles[i].setOcupacionMaxima(0.7);
+//            calles[i].setOcupacionMinima(0.9);
+//        }
+
         //DIJKSTRA SENCILLO
 
-//        Grafo g = new Grafo(calles);
-//        g.dijkstra(START);
-//        g.printPath(END);
-//        double tiempo = g.getDistanciaRecorrida(END)/ambulancia.getVelocidad();
-//        System.out.println("El tiempo total de recorrido es: "+tiempo+" segundos");
+        ArrayList tiemposDijkstraTradicional = new ArrayList();
+        ArrayList tiemposDijkstraPonderado = new ArrayList();
 
 
-        //DIJKSTRA PONDERADO
-
-        for(int i=0;i<10;i++)
+        for(int i=0;i<100;i++)
         {
             for(int j =0;j<calles.length;j++)
             {
@@ -33,15 +40,46 @@ public class Dijkstra {
                 calles[j].calcularPesoPonderado();
             }
             Grafo g = new Grafo(calles);
-            System.out.println("ITERACION "+i);
-            System.out.println();
+//            System.out.println("PRUEBA "+(i+1));
+//            System.out.println();
+
+            //DIJKSTRA SENCILLO
+//            System.out.println("Dijkstra Tradicional");
+            g.dijkstra(START);
+//            g.printPath(END);
+//            System.out.println("El tiempo total de recorrido es: "+g.getTiempoRecorridoDijkstraTradicional(END)+" segundos");
+//            System.out.println();
+//            tBarDijkstraSencillo+=g.getTiempoRecorridoDijkstraTradicional(END);
+            tiemposDijkstraTradicional.add(g.getTiempoRecorridoDijkstraTradicional(END));
+
+            //DIJKSTRA PONDERADO
+//            System.out.println("Dijkstra Ponderado");
+            long startTime = System.nanoTime();
             g.dijkstraPonderado(START);
-            g.printPathPonderado(END);
-            System.out.println("El tiempo total de recorrido es: "+g.getTiempoRecorrido(END)+" segundos");
-            System.out.println();
+            long endTime = System.nanoTime() - startTime;
+            double segundos = (double) endTime / 1000000000;
+//            g.printPathPonderado(END);
+            tiemposDijkstraPonderado.add(g.getTiempoRecorrido(END));
+//            System.out.println("El tiempo total de recorrido es: "+g.getTiempoRecorrido(END)+" segundos");
+//            System.out.println("El tiempo que tomó en correr Dijkstra Ponderado fue: ");
+//            System.out.println(endTime+" nanosegundos");
+//            System.out.println(segundos+" segundos");
+//            System.out.println();
+//            tBarDijkstraPonderado+=g.getTiempoRecorrido(END);
         }
 
-
+        //System.out.println("Tiempo Promedio Dijkstra Tradicional: "+tBarDijkstraSencillo/100+" segundos");
+        //System.out.println("Tiempo Promedio Dijkstra Ponderado: "+tBarDijkstraPonderado/100+" segundos");
+        System.out.println("TRADICIONAL");
+        for(int i=0;i<tiemposDijkstraTradicional.size();i++)
+        {
+            System.out.println(tiemposDijkstraTradicional.get(i));
+        }
+        System.out.println("PONDERADO");
+        for (int i=0;i<tiemposDijkstraPonderado.size();i++)
+        {
+            System.out.println(tiemposDijkstraPonderado.get(i));
+        }
 
         //g.printAllPaths();
     }

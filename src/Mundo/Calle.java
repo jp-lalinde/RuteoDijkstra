@@ -11,15 +11,11 @@ public class Calle {
     //-----------------------------------------------------------------------------------------------------------------//
     private String interseccionOrigen;
     private String interseccionDestino;
-    private boolean hayAccidente;
     private int carriles;
-    private double capacidad;
     private double ocupacionMaxima;
     private double ocupacionMinima;
     private double ocupacion;
-    private double[][] tamanioVehiculos;
     private int distancia;
-    private boolean ambulanciaEnTransito;
     private boolean dobleVia;
     private String tipoTrafico;
     private double pesoPonderado;
@@ -68,14 +64,6 @@ public class Calle {
         return interseccionOrigen;
     }
 
-    /**
-     * Establece la intersección origen
-     * @param interseccionOrigen La intersección origen
-     */
-    public void setInterseccionOrigen(String interseccionOrigen)
-    {
-        this.interseccionOrigen = interseccionOrigen;
-    }
 
     /**
      * Retorna la intersección destino.
@@ -87,114 +75,6 @@ public class Calle {
     }
 
     /**
-     * Establece la intersección destino
-     * @param interseccionDestino La intersección destino
-     */
-    public void setInterseccionDestino(String interseccionDestino)
-    {
-        this.interseccionDestino = interseccionDestino;
-    }
-
-    /**
-     * Retorna el valor de verdad asociado a si hay un accidente en la calle.
-     * @return True en caso de haber un accidente, False de lo contrario
-     */
-    public boolean isHayAccidente()
-    {
-        return hayAccidente;
-    }
-
-    /**
-     * Establece el valor de verdad asociado a si hay un accidente en la calle
-     * @param hayAccidente El valor de verdad.
-     */
-    public void setHayAccidente(boolean hayAccidente)
-    {
-        this.hayAccidente = hayAccidente;
-    }
-
-    /**
-     * Retorna el número de carriles de la calle.
-     * @return El número de carriles.
-     */
-    public int getCarriles()
-    {
-        return carriles;
-    }
-
-    /**
-     * Establece el número de carriles de la calle.
-     * @param carriles El número de carriles.
-     */
-    public void setCarriles(int carriles)
-    {
-        this.carriles = carriles;
-    }
-
-    /**
-     * Retorna la capacidad (en número de vehículos) de la calle.
-     * @return La capacidad de la calle.
-     */
-    public double getCapacidad()
-    {
-        return capacidad;
-    }
-
-    /**
-     * Retorna la ocupación máxima que se encontrarán en la calle.
-     * @return La ocupación de vehículos máximo.
-     */
-    public double getOcupacionMaxima()
-    {
-        return ocupacionMaxima;
-    }
-
-    /**
-     * Establece la ocupación máxima vehículos que se encontrarán en la calle.
-     * @param ocupacionMaxima La ocupación máxima vehículos.
-     */
-    public void setOcupacionMaxima(double ocupacionMaxima)
-    {
-        this.ocupacionMaxima = ocupacionMaxima;
-    }
-
-    /**
-     * Retorna la ocupación mínima que se encontrarán en la calle.
-     * @return la ocupación de vehículos mínimo.
-     */
-    public double getOcupacionMinimo()
-    {
-        return ocupacionMinima;
-    }
-
-    /**
-     * Establec la ocupación mínima de vehículos que se encontrarán en la calle.
-     * @param ocupacionMinima Ocupación mínima de vehículos.
-     */
-    public void setOcupacionMinima(double ocupacionMinima)
-    {
-        this.ocupacionMinima = ocupacionMinima;
-    }
-
-    /**
-     * Retorna la matriz vehículo-tamaño
-     * @return La matriz.
-     */
-    public double[][] getTamanioVehiculos()
-    {
-        return tamanioVehiculos;
-    }
-
-    /**
-     * Establece la matriz vehículo-tamaño
-     * @param tamanioVehiculos La matriz.
-     */
-    public void setTamanioVehiculos(double[][] tamanioVehiculos)
-    {
-        this.tamanioVehiculos = tamanioVehiculos;
-    }
-
-    /**
      * Retorna la distancia en metros de la calle.
      * @return La distancia de la calle.
      */
@@ -202,34 +82,6 @@ public class Calle {
     {
         return distancia;
     }
-
-    /**
-     * Establece la distancia en metros de la calle.
-     * @param distancia La distancia de la calle.
-     */
-    public void setDistancia(int distancia)
-    {
-        this.distancia = distancia;
-    }
-
-    /**
-     * Retorna el valor de verdad asociado a si hay una ambulancia en la calle.
-     * @return True si hay una ambulancia, False de lo contrario.
-     */
-    public boolean isAmbulanciaEnTransito()
-    {
-        return ambulanciaEnTransito;
-    }
-
-    /**
-     * Establece el valor de verdad asociado a si hay una ambulancia en la calle.
-     * @param ambulanciaEnTransito El nuevo valor de verdad.
-     */
-    public void setAmbulanciaEnTransito(boolean ambulanciaEnTransito)
-    {
-        this.ambulanciaEnTransito = ambulanciaEnTransito;
-    }
-
 
     /**
      * Retorna si la calles es doble vía
@@ -255,15 +107,6 @@ public class Calle {
     public void randomizeOcupacion()
     {
         ocupacion = ocupacionMinima + (Math.random() * (ocupacionMaxima - ocupacionMinima) );
-    }
-
-    /**
-     * Retorna la ocupación de la calle
-     * @return La ocupacion
-     */
-    public double getOcupacion()
-    {
-        return ocupacion;
     }
 
     /**
